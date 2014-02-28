@@ -83,6 +83,7 @@ Organism = {
       relFit = (absFit - minFit)/(maxFit - minFit)
 
       fitness = Utility.finite @linear relFit, absFit, args.options.difficulty
+      fitness = 1 if absFit == 1
     else
       fitness = absFit
 
