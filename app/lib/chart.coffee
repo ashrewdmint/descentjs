@@ -6,8 +6,8 @@ module.exports = (data) ->
     bottom: 30
     left: 50
 
-  width = window.innerWidth - 50 - margin.left - margin.right
-  height = window.innerHeight * 2/3 - 50 - margin.top - margin.bottom
+  width = window.innerWidth - margin.left - margin.right
+  height = window.innerHeight * 0.35 - margin.top - margin.bottom
   #parseDate = d3.time.format("%Y%m%d").parse
   x = d3.scale.linear().range([
     0

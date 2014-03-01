@@ -1,6 +1,7 @@
 Utility  = require 'lib/descent/utility'
 Organism = require 'lib/descent/organism'
 chart    = require 'lib/chart'
+Random   = require 'lib/descent/random'
 
 MAX_MUTATE = 1
 MAX_VARIANCE = 0
@@ -37,7 +38,15 @@ World = {
     return w if w.latest.population == 0
     
     latest = Utility.clone(w.latest)
+
+    # Change genome over time
+    #for gene, value of options.targetGenome
+      #if Random.gamble options.targetChangeRate
+        #value += Random.normal(255 * Math.random())
+        #options.targetGenome[gene] = Math.min(Math.max(value, 0), 255)
     
+    #console.log options.targetGenome
+
     for o in w.organisms
       result = Organism.tick(o, {
         target:  options.targetGenome
@@ -68,7 +77,7 @@ World = {
     return w
   
   delay: (w, options) ->
-    w.timeout = setTimeout(=>
+    w.timeout = setTimeout( =>
       @simulate w, options
       #console.log(w.age / w.limit)
 
@@ -97,7 +106,7 @@ World = {
           fitness: stat.fitness * max
           good: (delta.good/MAX_MUTATE) * max/2
           bad:  (delta.bad/MAX_MUTATE)  * max/2
-          births: delta.births
+          births: delta.births / 2
           deaths: delta.deaths
           # variance: (stat.variance/MAX_VARIANCE) * max/1.5
         )

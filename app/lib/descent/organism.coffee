@@ -58,11 +58,11 @@ Organism = {
       counter.bad  += 1 if fo < fp
     counter
   
-  copy: (o, args) -> # pmutate, scale, callback
+  copy: (o, args) -> # pmutate, scale, callback, options
     g = Genome.copy(
       genome:   o.genome
-      pmutate:  args.pmutate
-      scale:    args.scale
+      pmutate:  args.options.pMutateMin + (o.genome.pmutate - args.options.pMutateMin)
+      scale:    o.genome.mscale
       callback: args.callback
     )
     o2 = @default()
@@ -79,11 +79,11 @@ Organism = {
       allFit = _.map(args.siblings, (o2) => @fitness(o2, args.options))
       maxFit = _.max allFit
       minFit = _.min allFit
+      diff   = maxFit - minFit
 
-      relFit = (absFit - minFit)/(maxFit - minFit)
+      relFit = if diff == 0 then 1 else (absFit - minFit)/(maxFit - minFit)
 
       fitness = Utility.finite @linear relFit, absFit, args.options.difficulty
-      fitness = 1 if absFit == 1
     else
       fitness = absFit
 

@@ -19,8 +19,16 @@ Genome = {
   copy: (args) -> # genome, pmutate, scale, callback
     g = @default()
     for gene, value of args.genome
-      copied = Math.max(@mutate(value, args.genome.pmutate, args.genome.mscale), 0)
-      copied = Math.min(copied, 255) unless gene == 'size'
+      copied = Math.max(@mutate(value, args.pmutate, args.mscale), 0)
+
+      maximum = false
+      if ['red', 'blue', 'green'].indexOf(gene) >= 0
+        maximum = 255
+      else if gene == 'pmutate'
+        maximum = 1
+
+      copied = Math.min(copied, maximum) if maximum
+
       if copied != value and typeof(args.callback) == 'function'
         args.callback(gene, value, copied)
       
@@ -34,7 +42,8 @@ Genome = {
     mutate = -mutate if Random.gamble 0.5
     #value + mutate
 
-    value + Math.round(Random.normal(scale))
+    #value + Math.round(Random.normal(scale))
+    value * Math.round Random.normal(scale)
 
   fitness: (g, options) ->
     @fitnessEuclid g, options
@@ -48,7 +57,6 @@ Genome = {
       diffs += Math.pow(value - g[gene], 2)
 
     Utility.finite 1 - diffs / max
-
   
   fitnessPow: (g, options) ->
     fit = 1

@@ -9,16 +9,20 @@ options = {
   TARGET     : {red: 255, green: 0, blue: 0} # Evolve red things
   TIME       : 1
   delay: 0
-  maxPop: 1000
-  maxTime: 1000
+  maxPop: 500
+  maxTime: 2000
 
-  #pDeathUnfit: 1
-  pDeathFit: 0.26
-  difficulty: 40
-  #pDivideUnfit: 0
-  #pDivideFit: 0.9
-  #doomLine: 0.5
-  #difficulty: 0
+  targetChangeRate: 0.1
+  pMutateMin: 0.001
+  difficulty: 0.8
+
+  pDeathUnfit: 0.005
+  pDeathFit: 0.001
+  pDivideUnfit: 0.004
+  pDivideFit: 0.01
+
+  doomLine: 0.5
+
 
   callback: (world) ->
     $('#container').remove();
@@ -34,7 +38,7 @@ options = {
       overflow: 'hidden'
     )
 
-    maxHeight = window.innerHeight * 1/3
+    maxHeight = window.innerHeight * 0.60
     maxWidth  = window.innerWidth
     thingies  = world.organisms.length
     square    = Math.ceil Math.sqrt(thingies)
@@ -99,6 +103,7 @@ Application =
     w = Descent.world.setup Descent.world.default()
     w.finished = ->
       console.log(w.latest)
+      console.log(w.organisms)
 
     Descent.world.delay w, opts
 
